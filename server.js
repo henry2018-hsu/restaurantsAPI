@@ -61,7 +61,7 @@ app.get("/api/restaurants/?",  (req, res) => {
   })
     .catch((err) => {
       console.log(err);
-      res.json(err.message); 
+      res.status(404).json(null); 
     });
 });
 

@@ -61,7 +61,7 @@ app.get("/api/restaurants/?",  (req, res) => {
   })
     .catch((err) => {
       console.log(err);
-      res.status(404).json(null); 
+      res.status(404); 
     });
 });
 
@@ -72,13 +72,14 @@ app.get("/api/restaurants/:id",  (req, res) => {
   o.then((restaurant) => {
     if(!restaurant) {
         console.log("No restaurant could be found");
+        res.status(200).json(restaurant);
     } else {
       res.status(200).json(restaurant);
     }    
   })
     .catch((err) => {
       console.log(err);
-      res.status(404).json(err); 
+      res.status(404); 
     });
 });
 

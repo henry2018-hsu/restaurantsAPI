@@ -16,6 +16,7 @@ const cors = require("cors");
 const bodyParser = require('body-parser');
 const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
+var ObjectId = require('mongoose').Types.ObjectId;
 // Or use some other port number that you like better
 
 // Add support for incoming JSON entities
@@ -61,26 +62,31 @@ app.get("/api/restaurants/?",  (req, res) => {
   })
     .catch((err) => {
       console.log(err);
-      res.status(404); 
+      res.status(404).json(null);
     });
 });
 
 // Get one
 app.get("/api/restaurants/:id",  (req, res) => {
-  // Call the RestaurantDB method
-  let o =  db.getRestaurantById(req.params.id);
-  o.then((restaurant) => {
-    if(!restaurant) {
-        console.log("No restaurant could be found");
+  if(!ObjectId.isValid(req.params.id)) {
+    res.status(404).json(null); return;
+  }
+  else {
+    // Call the RestaurantDB method
+    let o =  db.getRestaurantById(req.params.id);
+    o.then((restaurant) => {
+      if(!restaurant) {
+          console.log("No restaurant could be found");
+          res.status(200).json(restaurant);
+      } else {
         res.status(200).json(restaurant);
-    } else {
-      res.status(200).json(restaurant);
-    }    
-  })
-    .catch((err) => {
-      console.log(err);
-      res.status(404); 
-    });
+      }    
+    })
+      .catch((err) => {
+        console.log(err);
+        res.status(404); 
+      });
+    }  
 });
 
 // Add new

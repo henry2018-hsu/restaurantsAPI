@@ -58,6 +58,7 @@ module.exports = class RestaurantDB{
     }
 
     getRestaurantById(id){
+        console.log(id);
         return this.Restaurant.findOne({_id: id}).exec();
     }
 
